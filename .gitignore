@@ -2,12 +2,9 @@
 
 # Binaries for programs and plugins
 *.exe
-*.exe~
 *.dll
 *.so
 *.dylib
-
-pkg/
 
 # Test binary, build with `go test -c`
 *.test
@@ -17,3 +14,4 @@ pkg/
 
 # IDE
 .idea/
+.vscode/
