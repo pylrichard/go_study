@@ -13,14 +13,14 @@ import (
 
 // 见http://junes.tech/2021/03/07/go-tip/go-tip-1/
 func main() {
-	simple()
+	//simple()
 	//useSignal()
 	//one2One()
 	//one2OneTwoChannel()
 	//one2OneChanInChan()
 	//one2OneUseContext()
 	//one2Many()
-	//one2ManyUseContext()
+	one2ManyUseContext()
 }
 
 // curl http://localhost:8080/hello
@@ -188,18 +188,18 @@ func one2ManyUseContext() {
 	wg.Add(num)
 
 	for i := 0; i < num; i++ {
-		go func(ctx context.Context) {
+		go func(ctx context.Context, index int) {
 			defer wg.Done()
 			for {
 				select {
 				case <-ctx.Done():
-					fmt.Println("stopped")
+					fmt.Printf("%d stopped\n", index)
 					return
 				default:
 					time.Sleep(time.Duration(i) * time.Second)
 				}
 			}
-		}(ctx)
+		}(ctx, i)
 	}
 
 	<-sig
