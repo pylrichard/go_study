@@ -9,6 +9,7 @@ import (
 )
 
 func getFuncName(i interface{}, seps ...rune) string {
+	//通过反射的方式获取函数的地址
 	fn := runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()
 
 	fields := strings.FieldsFunc(fn, func(sep rune) bool {
