@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+	"sort"
+)
 
 //见https://github.com/golang/go/wiki/SliceTricks
 var sa = make([]int, 6, 12)
@@ -35,7 +39,7 @@ func main() {
 	//even := filter2(sa, isEven)
 	//fmt.Println(even)
 
-	filter3(sa, isEven)
+	//filter3(sa, isEven)
 
 	//insert1()
 	//insert2()
@@ -44,6 +48,26 @@ func main() {
 	//fmt.Println(popHead())
 
 	//appendHead()
+
+	//reverse1()
+	//reverse2()
+
+	//shuffle1()
+	//shuffle2()
+
+	//batches := batchProcessing()
+	//fmt.Println(batches)
+
+	//delDuplicate()
+
+	//s := []string{"a", "b", "c", "d", "e"}
+	//s = moveToHead("c", s)
+	//fmt.Println(s)
+	//s = moveToHead("f", s)
+	//fmt.Println(s)
+
+	r := slidingWindow(2, sa)
+	fmt.Println(r)
 
 	/*
 		sa在切片长度等于容量时，添加元素会生成新切片，见
@@ -251,3 +275,114 @@ func appendHead() {
 	sa = append([]int{-1}, sa...)
 }
 
+/*
+	将切片sa的元素顺序翻转
+	通过迭代两两互换元素完成
+ */
+func reverse1() {
+	for i := len(sa)/2-1; i >= 0; i-- {
+		opp := len(sa)-1-i
+		sa[i], sa[opp] = sa[opp], sa[i]
+	}
+}
+
+func reverse2() {
+	for left, right := 0, len(sa)-1;
+		left < right;
+		left, right = left+1, right-1 {
+		sa[left], sa[right] = sa[right], sa[left]
+	}
+}
+
+/*
+	打乱切片sa中元素顺序
+ */
+
+//Fisher–Yates算法
+func shuffle1() {
+	for i := len(sa)-1; i > 0; i-- {
+		j := rand.Intn(i+1)
+		sa[i], sa[j] = sa[j], sa[i]
+	}
+}
+
+//Go 1.10开始可以使用math/rand.Shuffle
+func shuffle2() {
+	rand.Shuffle(len(sa), func(i, j int) {
+		sa[i], sa[j] = sa[j], sa[i]
+	})
+}
+
+//使用最小分配进行批处理
+func batchProcessing() [][]int {
+	batchSize := 3
+	capacity := (len(sa)+batchSize-1)/batchSize
+	batches := make([][]int, 0, capacity)
+	for batchSize < len(sa) {
+		sa, batches = sa[batchSize:], append(batches, sa[0:batchSize:batchSize])
+		fmt.Println(sa, batches)
+	}
+	batches = append(batches, sa)
+
+	return batches
+}
+
+//就地删除重复元素(元素可比较)
+func delDuplicate() {
+	//切片元素可以是任意可排序类型
+	in := []int{3, 2, 1, 4, 3, 2, 1, 4, 1}
+	sort.Ints(in)
+	j := 0
+	for i := 1; i < len(in); i++ {
+		if in[j] == in[i] {
+			continue
+		}
+		j++
+		//保存原始数据
+		//in[i], in[j] = in[j], in[i]
+		//保存需要的数据
+		in[j] = in[i]
+	}
+	result := in[:j+1]
+	fmt.Println(in)
+	fmt.Println(result)
+}
+
+//元素存在就移动到头部，不存在则插入到头部
+func moveToHead(needle string, s []string) []string {
+	if len(s) != 0 && s[0] == needle {
+		return s
+	}
+	prev := needle
+	for i, elem := range s {
+		switch {
+		case i == 0:
+			s[0] = needle
+			prev = elem
+		case elem == needle:
+			s[i] = prev
+			return s
+		default:
+			s[i] = prev
+			prev = elem
+		}
+	}
+
+	return append(s, prev)
+}
+
+
+//切片input生成size大小的滑动窗口
+func slidingWindow(size int, input []int) [][]int {
+	if len(input) <= size {
+		return [][]int{input}
+	}
+	r := make([][]int, 0, len(input)-size+1)
+	for i, j := 0, size;
+		j <= len(input);
+		i, j = i+1, j+1{
+		r = append(r, input[i:j])
+	}
+
+	return r
+}
