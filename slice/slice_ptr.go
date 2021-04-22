@@ -10,7 +10,6 @@ func main() {
 	//array()
 }
 
-
 func slice() {
 	s := []int{1, 2}
 	fmt.Printf("%v, %T\n", s, s)
