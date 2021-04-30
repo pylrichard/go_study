@@ -1,4 +1,4 @@
-package main
+package excelize
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 )
 
-func writeExcel() {
+func WriteExcel() {
 	f := excelize.NewFile()
 	index := f.NewSheet("Sheet2")
 	//向单元格中写入值
@@ -19,7 +19,7 @@ func writeExcel() {
 	}
 }
 
-func readExcel() {
+func ReadExcel() {
 	f, err := excelize.OpenFile("1.xlsx")
 	if err != nil {
 		fmt.Println(err)
@@ -42,7 +42,7 @@ func readExcel() {
 	}
 }
 
-func addChart() {
+func AddChart() {
 	categories := map[string]string{
 		"A2": "Small", "A3": "Normal", "A4": "Large",
 		"B1": "Apple", "C1": "Orange", "D1": "Pear"}
@@ -88,7 +88,7 @@ func addChart() {
 	}
 }
 
-func addPicture() {
+func AddPicture() {
 	f, err := excelize.OpenFile("2.xlsx")
 	if err != nil {
 		fmt.Println(err)
@@ -100,10 +100,4 @@ func addPicture() {
 	if err = f.Save(); err != nil {
 		fmt.Println(err)
 	}
-}
-
-func main() {
-	writeExcel()
-	readExcel()
-	addChart()
 }
