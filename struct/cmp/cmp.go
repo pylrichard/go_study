@@ -1,4 +1,4 @@
-package cmp
+package main
 
 import (
 	"fmt"
@@ -98,4 +98,13 @@ func Cmp6() {
     }
 
     fmt.Println("false")
+}
+
+func main() {
+	//Cmp1()
+	//Cmp2()
+	//Cmp3()
+	//Cmp4()
+	//Cmp5()
+	Cmp6()
 }
