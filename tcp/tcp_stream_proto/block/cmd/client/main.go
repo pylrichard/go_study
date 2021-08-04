@@ -28,7 +28,7 @@ func main() {
 }
 
 func startClient() {
-	conn, err := net.Dial("tcp", ":8080")
+	conn, err := net.Dial("tcp", ":8888")
 	if err != nil {
 		log.Println("dial error: ", err)
 		return
@@ -47,12 +47,12 @@ func startClient() {
 		for {
 			//read from connection
 			//handle ack
-			ackPayload, err := codec.Decode(conn)
+			ackFramePayload, err := codec.Decode(conn)
 			if err != nil {
 				panic(err)
 			}
 
-			pkt, err := packet.Decode(ackPayload)
+			pkt, err := packet.Decode(ackFramePayload)
 			sa, ok := pkt.(*packet.SubmitAck)
 			if !ok {
 				panic("not submit ack")

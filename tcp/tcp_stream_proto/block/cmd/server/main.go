@@ -2,15 +2,22 @@ package main
 
 import (
 	"fmt"
+	"go/go_study/tcp/tcp_stream_proto/block/pkg/monitor"
 	"log"
 	"net"
+	"net/http"
 
 	"go/go_study/tcp/tcp_stream_proto/block/pkg/frame"
 	"go/go_study/tcp/tcp_stream_proto/block/pkg/packet"
 )
 
 func main() {
-	l, err := net.Listen("tcp", ":8080")
+	//monitor http server
+	go func() {
+		log.Fatal(http.ListenAndServe(":8090", nil))
+	}()
+
+	l, err := net.Listen("tcp", ":8888")
 	if err != nil {
 		log.Println("listen error: ", err)
 		return
@@ -52,6 +59,8 @@ func handleConn(c net.Conn) {
 			log.Println("handleConn: frame encode error: ", err)
 			return
 		}
+		//每处理完一个请求，计数器+1
+		monitor.SubmitInTotal.Add(1)
 	}
 }
 
