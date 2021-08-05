@@ -3,6 +3,8 @@ package frame
 import (
 	"encoding/binary"
 	"io"
+
+	"github.com/bytedance/gopkg/lang/mcache"
 )
 
 /*
@@ -62,7 +64,7 @@ func (c *Codec) Decode(r io.Reader) (Payload, error) {
 		return nil, err
 	}
 
-	buf := make([]byte, totalLen - HeaderSize)
+	buf := mcache.Malloc(int(totalLen - HeaderSize))
 	_, err = io.ReadFull(r, buf)
 	if err != nil {
 		return nil, err

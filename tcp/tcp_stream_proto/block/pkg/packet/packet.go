@@ -3,6 +3,7 @@ package packet
 import (
 	"bytes"
 	"fmt"
+	"github.com/bytedance/gopkg/lang/mcache"
 )
 
 /*
@@ -74,6 +75,7 @@ func (sa *SubmitAck) Encode() ([]byte, error) {
 }
 
 func Decode(packet []byte) (Packet, error) {
+	defer mcache.Free(packet)
 	cmdId := packet[0]
 	body := packet[CmdIdSize:]
 

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"go/go_study/tcp/tcp_stream_proto/block/pkg/monitor"
 	"log"
@@ -37,12 +38,13 @@ func main() {
 func handleConn(c net.Conn) {
 	defer c.Close()
 	codec := frame.NewCodec()
+	buf := bufio.NewReader(c)
 
 	for {
 		//read from the connection
 		//decode the frame to get the payload
 		//the payload is a packet which is not decoded
-		framePayload, err := codec.Decode(c)
+		framePayload, err := codec.Decode(buf)
 		if err != nil {
 			log.Println("handleConn frame decode error: ", err)
 			return
