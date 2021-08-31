@@ -13,6 +13,7 @@ const (
 	dataSize = 128
 )
 
+// NotPooledWork does not pool the tasks
 func NotPooledWork(allData []model.SimpleData) {
 	start := time.Now()
 	var wg sync.WaitGroup

@@ -13,5 +13,5 @@ func UsePool() {
 		allData = append(allData, data)
 	}
 	log.Printf("start processing all work\n")
-	worker.PooledWork(allData)
+	worker.PooledWorkError(allData)
 }
