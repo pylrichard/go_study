@@ -1,9 +1,8 @@
 package main
 
-import (
-	"go/go_study/pool/worker"
-)
+import "go/go_study/pool/pool2"
 
 func main() {
-	worker.UsePool()
+	//pool1.UsePool()
+	pool2.UsePool()
 }

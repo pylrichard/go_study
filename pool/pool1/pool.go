@@ -1,4 +1,4 @@
-package worker
+package pool1
 
 import (
 	"errors"
