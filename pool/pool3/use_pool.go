@@ -1,8 +1,8 @@
 package pool3
 
 import (
-	"go/go_study/pool/pool3/basic"
 	"go/go_study/pool/pool3/model"
+	"go/go_study/pool/pool3/worker"
 	"log"
 )
 
@@ -13,5 +13,5 @@ func UsePool() {
 		allData = append(allData, data)
 	}
 	log.Printf("start processing all work\n")
-	basic.Work(allData)
+	worker.NotPooledWork(allData)
 }
