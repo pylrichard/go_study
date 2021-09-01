@@ -1,9 +1,11 @@
 package pool3
 
 import (
-	"go/go_study/pool/pool3/pool"
 	"log"
+	"math/rand"
 	"time"
+
+	"go/go_study/pool/pool3/pool"
 )
 
 func UsePool() {
@@ -20,5 +22,25 @@ func UsePool() {
 	}
 
 	p := pool.NewPool(allTask, 6)
-	p.Run()
+	go func() {
+		for {
+			taskId := rand.Intn(64)
+
+			if taskId % 6 == 0 {
+				p.Stop()
+			}
+
+			time.Sleep(time.Duration(rand.Intn(6)) * time.Second)
+
+			task := pool.NewTask(func(data interface{}) error {
+				taskId := data.(int)
+				time.Sleep(100 * time.Millisecond)
+				log.Printf("task %d processed\n", taskId)
+
+				return nil
+			}, taskId)
+			p.AddTask(task)
+		}
+	}()
+	p.RunBackground()
 }

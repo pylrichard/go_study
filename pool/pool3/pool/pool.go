@@ -10,11 +10,15 @@ const (
 	taskSize = 128
 )
 
+// Pool is the worker pool
 type Pool struct {
 	Tasks 		[]*Task
-	Concurrency int
-	Collector	chan *Task
-	WaitGroup	sync.WaitGroup
+	Workers 	[]*Worker
+
+	Concurrency 		int
+	Collector			chan *Task
+	RunningBackground 	chan bool
+	WaitGroup			sync.WaitGroup
 }
 
 // NewPool init a new pool with the given tasks and concurrency
@@ -42,4 +46,40 @@ func (p *Pool) Run() {
 	p.WaitGroup.Wait()
 	elapsed := time.Since(start)
 	log.Printf("took %s\n", elapsed)
+}
+
+// AddTask adds a task to the pool
+func (p *Pool) AddTask(task *Task) {
+	p.Collector <-task
+}
+
+// RunBackground runs the pool in background
+func (p *Pool) RunBackground() {
+	go func() {
+		for {
+			log.Println("waiting for task to come in...")
+			time.Sleep(6 * time.Second)
+		}
+	}()
+
+	for i := 1; i <= p.Concurrency; i++ {
+		worker := NewWorker(p.Collector, i)
+		p.Workers = append(p.Workers, worker)
+		go worker.StartBackground()
+	}
+
+	for _, task := range p.Tasks {
+		p.Collector <-task
+	}
+
+	p.RunningBackground = make(chan bool)
+	<-p.RunningBackground
+}
+
+// Stop stops background workers
+func (p *Pool) Stop() {
+	for _, worker := range p.Workers {
+		worker.Stop()
+	}
+	p.RunningBackground <-true
 }
