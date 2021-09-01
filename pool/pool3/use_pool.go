@@ -1,17 +1,24 @@
 package pool3
 
 import (
-	"go/go_study/pool/pool3/model"
-	"go/go_study/pool/pool3/worker"
+	"go/go_study/pool/pool3/pool"
 	"log"
+	"time"
 )
 
 func UsePool() {
-	var allData []model.SimpleData
-	for i := 0; i < 128; i++ {
-		data := model.SimpleData{ Id: i }
-		allData = append(allData, data)
+	var allTask []*pool.Task
+	for i := 0; i < 64; i++ {
+		task := pool.NewTask(func(data interface{}) error {
+			taskId := data.(int)
+			time.Sleep(100 * time.Millisecond)
+			log.Printf("task %d processed", taskId)
+
+			return nil
+		}, i)
+		allTask = append(allTask, task)
 	}
-	log.Printf("start processing all work\n")
-	worker.PooledWorkError(allData)
+
+	p := pool.NewPool(allTask, 6)
+	p.Run()
 }
