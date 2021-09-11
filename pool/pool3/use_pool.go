@@ -38,6 +38,8 @@ func UsePool() {
 
 	p := pool.NewPool(allTask, 6)
 
+	// Use cli package to make command line tool
+	// to explore various examples we have built here
 	app := &cli.App{
 		Name: "worker_pool",
 		Usage: "check different work loads with worker pool",
@@ -49,7 +51,7 @@ func UsePool() {
 		Commands: []cli.Command{
 			{
 				Name: "basic",
-				Usage: "run synchronously",
+				Usage: "Run synchronously",
 				Action: func(c *cli.Context) error {
 					basic.Work(allData)
 
@@ -58,7 +60,7 @@ func UsePool() {
 			},
 			{
 				Name:  "not_pooled",
-				Usage: "run without any pooling",
+				Usage: "Run without any pooling",
 				Action: func(c *cli.Context) error {
 					worker.NotPooledWork(allData)
 
@@ -67,7 +69,7 @@ func UsePool() {
 			},
 			{
 				Name:  "pooled",
-				Usage: "run with pooling",
+				Usage: "Run with pooling",
 				Action: func(c *cli.Context) error {
 					worker.PooledWork(allData)
 
@@ -76,7 +78,7 @@ func UsePool() {
 			},
 			{
 				Name:  "pooled_error",
-				Usage: "run with pooling that handles errors",
+				Usage: "Run with pooling that handles errors",
 				Action: func(c *cli.Context) error {
 					worker.PooledWorkError(allData)
 
@@ -85,7 +87,7 @@ func UsePool() {
 			},
 			{
 				Name:  "pool",
-				Usage: "run robust worker pool",
+				Usage: "Run robust worker pool",
 				Action: func(c *cli.Context) error {
 					p.Run()
 
@@ -94,7 +96,7 @@ func UsePool() {
 			},
 			{
 				Name:  "pool_bg",
-				Usage: "run robust worker pool in background",
+				Usage: "Run robust worker pool in background",
 				Action: func(c *cli.Context) error {
 					go func() {
 						for {
