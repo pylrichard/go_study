@@ -1,0 +1,16 @@
+{
+  "Name": "builder",
+  "DisplayName": "go builder",
+  "Description": "Run the Go Builder",
+
+  "Dir": "/Volumes/macOS/",
+  "Exec": "/Volumes/macOS/Applications",
+  "Args": ["/Volumes/Users/", "/Volumes/Workspace/"],
+  "Env": [
+    "PATH=/usr/local/bin:/usr/local/bin:/usr/local",
+    "BIN=/usr/local/bin"
+  ],
+
+  "Stderr": "./err.log",
+  "Stdout": "./out.log"
+}

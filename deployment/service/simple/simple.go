@@ -1,8 +1,9 @@
 package simple
 
 import (
-	"github.com/kardianos/service"
 	"log"
+
+	"github.com/kardianos/service"
 )
 
 //service日志对象
