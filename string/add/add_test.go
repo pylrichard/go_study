@@ -1,15 +1,14 @@
-package main
+package add
 
 import (
-	"fmt"
-	"testing"
-	"strings"
 	"bytes"
-	"strconv"
+	"fmt"
+	"strings"
+	"testing"
 )
 
-// BenchmarkAddStringWithOpeartor 字符串是不可变的，每次会产生临时新字符串，给gc造成额外负担
-func BenchmarkAddStringWithOpeartor(b *testing.B) {
+// BenchmarkAddStringWithOperator 字符串是不可变的，每次会产生临时新字符串，给gc造成额外负担
+func BenchmarkAddStringWithOperator(b *testing.B) {
 	hello := "hello"
 	world := "world"
 	for i := 0; i < b.N; i++ {
@@ -32,7 +31,7 @@ func BenchmarkAddStringWithJoin(b *testing.B) {
 	hello := "hello"
 	world := "world"
 	for i := 0; i < b.N; i++ {
-		_ = strings.join([]string{hello, world}, "=")
+		_ = strings.Join([]string{hello, world}, "=")
 	}
 }
 
